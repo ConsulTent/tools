@@ -18,7 +18,7 @@ echo 'http-request add-header X-Forwarded-Proto https if { ssl_fc }'
 echo " "
 echo '#Domain block: '
 
-for i in $(openssl s_client -showcerts -connect ${args[0]}:443 </dev/null 2>/dev/null | openssl x509 -noout -text | awk '/X509v3 Subject Alternative Name/ {getline;gsub(/ /,"",$0);gsub(/DNS:/,"",$0);gsub(/IPAddress:/,"",$0);gsub(/\*\./,"",$0);gsub(/\,/,"\n",$0); print}' | sort | uniq ); { 
+for i in $(openssl s_client -showcerts -connect ${args[0]}:443 </dev/null 2>/dev/null | openssl x509 -noout -text | awk '/X509v3 Subject Alternative Name/ {getline;gsub(/ /,"",$0);gsub(/DNS:/,"",$0);gsub(/IPAddress:/,"",$0);gsub(/\*\./,"",$0);gsub(/\,/,"\n",$0);gsub(/www\./,"",$0); print}' | sort | uniq ); { 
 
 echo "redirect scheme https code 301 if { hdr_end(Host) -i $i } !{ ssl_fc }";
 }
